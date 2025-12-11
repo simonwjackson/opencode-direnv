@@ -27,7 +27,8 @@ jobs:
       - name: Calculate CalVer version
         id: version
         run: |
-          TODAY=$(date +%Y.%-m.%-d)
+          # Format: YYYY.MMDD.BUILD (3-part semver compatible)
+          TODAY=$(date +%Y.%m%d)
           
           # Find latest tag for today and increment, or start at 0
           LATEST=$(git tag -l "v${TODAY}.*" | sort -V | tail -1)

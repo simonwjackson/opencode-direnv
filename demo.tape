@@ -1,33 +1,39 @@
 # VHS Demo for opencode-direnv
-# Run: nix-shell -p vhs ffmpeg --run "vhs demo.tape"
+# Run: nix-shell -p vhs ffmpeg opencode --run "vhs demo.tape"
 
 Output demo.gif
 
 Set Shell "bash"
 Set FontSize 16
-Set Width 1000
-Set Height 600
-Set Theme "Catppuccin Mocha"
+Set Width 960
+Set Height 720
+Set Theme "tokyonight"
 Set Padding 20
 Set TypingSpeed 75ms
-
-# Setup alias for opencode (hidden)
-Type "cd /home/simonwjackson/projects/opencode-direnv"
-Enter
-Sleep 500ms
-Show
 
 # Show .envrc
 Type "cat .envrc"
 Enter
 Sleep 2s
 
+# Setup alias for opencode (hidden)
+Type "echo $API_URL"
+Enter
+Sleep 2s
+Type "node -v"
+Enter
+Sleep 2s
+Show
+
 # Start opencode
 Type "opencode"
 Enter
-Sleep 6s
+Sleep 2s
 
-# Ask if direnv is loaded
-Type "Is direnv loaded?"
+# Check if direnv is loaded
+Type "echo $API_URL"
 Enter
-Sleep 8s
+Sleep 7s
+Type "node -v"
+Enter
+Sleep 7s

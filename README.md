@@ -4,8 +4,8 @@
 
 **Seamless direnv integration for OpenCode**
 
-[![npm version](https://img.shields.io/npm/v/opencode-direnv?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/opencode-direnv)
-[![npm downloads](https://img.shields.io/npm/dm/opencode-direnv?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/opencode-direnv)
+[![npm version](https://img.shields.io/npm/v/@simonwjackson/opencode-direnv?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/@simonwjackson/opencode-direnv)
+[![npm downloads](https://img.shields.io/npm/dm/@simonwjackson/opencode-direnv?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/@simonwjackson/opencode-direnv)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Bun](https://img.shields.io/badge/Bun-%3E%3D1.0-f9f1e1?style=flat-square&logo=bun&logoColor=black)](https://bun.sh/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -52,11 +52,9 @@ opencode-direnv automatically detects and loads `.envrc` files, ensuring your Op
 
 ## Installation
 
-### Via bun
+### Via OpenCode Config
 
-```bash
-bun add opencode-direnv
-```
+Just add the plugin to your configuration — OpenCode handles installation automatically.
 
 ### Configuration
 
@@ -65,14 +63,14 @@ Add the plugin to your OpenCode configuration:
 **Project-level** (`./opencode.json`):
 ```json
 {
-  "plugin": ["opencode-direnv"]
+  "plugin": ["@simonwjackson/opencode-direnv"]
 }
 ```
 
 **Global** (`~/.config/opencode/opencode.json`):
 ```json
 {
-  "plugin": ["opencode-direnv"]
+  "plugin": ["@simonwjackson/opencode-direnv"]
 }
 ```
 

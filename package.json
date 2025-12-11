@@ -1,5 +1,5 @@
 {
-  "name": "opencode-direnv",
+  "name": "@simonwjackson/opencode-direnv",
   "version": "0.0.0-development",
   "description": "OpenCode plugin that automatically loads direnv environment variables at session start",
   "type": "module",

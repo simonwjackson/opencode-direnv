@@ -14,12 +14,6 @@ OpenCode plugin that automatically loads [direnv](https://direnv.net/) environme
 
 ## Installation
 
-```bash
-npm install opencode-direnv
-```
-
-## Usage
-
 Add to your `opencode.json`:
 
 ```json

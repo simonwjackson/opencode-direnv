@@ -1,0 +1,41 @@
+{
+  "name": "opencode-direnv",
+  "version": "1.0.0",
+  "description": "OpenCode plugin that automatically loads direnv environment variables at session start",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "opencode",
+    "direnv",
+    "plugin",
+    "nix",
+    "environment",
+    "env"
+  ],
+  "author": "simonwjackson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonwjackson/opencode-direnv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/simonwjackson/opencode-direnv/issues"
+  },
+  "homepage": "https://github.com/simonwjackson/opencode-direnv#readme",
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.0.147",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.3"
+  }
+}

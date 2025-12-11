@@ -31,10 +31,7 @@ type DirenvResult = {
   envrcPath: string | null
 }
 
-type SessionCreatedEvent = {
-  type: "session.created"
-  properties: { info: { id: string } }
-}
+
 
 type ShellCommand = {
   quiet: () => ShellCommand
@@ -159,15 +156,21 @@ export const DirenvLoader: Plugin = async ({ client, $, directory }) => {
 
   return {
     event: async ({ event }) => {
+      console.log("[opencode-direnv] Event received:", event.type)
+      
       if (event.type === "session.created") {
-        const typedEvent = event as SessionCreatedEvent
-        const sessionID = typedEvent.properties.info.id
-
-        // Only load once per session
-        if (loadedSessions.has(sessionID)) return
-        loadedSessions.add(sessionID)
+        console.log("[opencode-direnv] Session created event:", JSON.stringify(event, null, 2))
+        
+        // Use a simpler session tracking - just track if we've loaded for this directory
+        const sessionKey = `${directory}-loaded`
+        if (loadedSessions.has(sessionKey)) {
+          console.log("[opencode-direnv] Already loaded for this directory, skipping")
+          return
+        }
+        loadedSessions.add(sessionKey)
 
         const { envVars, blocked, envrcPath } = await loadDirenv()
+        console.log("[opencode-direnv] Direnv result:", { hasEnvVars: !!envVars, blocked, envrcPath })
 
         if (blocked && envrcPath) {
           await typedClient.tui.showToast({

@@ -11,17 +11,23 @@ Set Theme "Catppuccin Mocha"
 Set Padding 20
 Set TypingSpeed 75ms
 
-# Start in a project with .envrc
-Type "cd /tmp/demo-project && cat .envrc"
+# Setup alias for opencode (hidden)
+Type "cd /home/simonwjackson/projects/opencode-direnv"
+Enter
+Sleep 500ms
+Show
+
+# Show .envrc
+Type "cat .envrc"
 Enter
 Sleep 2s
 
 # Start opencode
 Type "opencode"
 Enter
-Sleep 4s
+Sleep 6s
 
 # Ask if direnv is loaded
 Type "Is direnv loaded?"
 Enter
-Sleep 5s
+Sleep 8s

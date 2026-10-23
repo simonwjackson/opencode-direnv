@@ -1,7 +1,11 @@
 import type { Plugin } from "@opencode-ai/plugin"
+import { findEnvrc } from "./envrc.js"
+import { setupV2 } from "./v2.js"
 
 /**
  * Direnv Auto-Loader Plugin for OpenCode
+ *
+ * OpenCode 1.x: the behavior below. OpenCode 2.x: see ./v2.ts.
  *
  * Automatically loads environment variables from direnv at session start.
  * This ensures bash commands have access to project-specific env vars
@@ -47,7 +51,7 @@ type ShellExecutor = (
   ...values: unknown[]
 ) => ShellCommand
 
-export const DirenvLoader: Plugin = async ({ client, $, directory }) => {
+const serverV1: Plugin = async ({ client, $, directory }) => {
   const loadedSessions = new Set<string>()
   const typedClient = client as unknown as SessionClient
   const shell = $ as unknown as ShellExecutor
@@ -65,42 +69,6 @@ export const DirenvLoader: Plugin = async ({ client, $, directory }) => {
   }
 
   /**
-   * Find .envrc file searching from directory up to stopAt (git root or filesystem root)
-   */
-  const findEnvrc = async (
-    startDir: string,
-    stopAt: string | null
-  ): Promise<string | null> => {
-    const { dirname, join } = await import("node:path")
-    const { existsSync } = await import("node:fs")
-
-    let current = startDir
-    const boundary = stopAt || "/"
-
-    while (true) {
-      const envrcPath = join(current, ".envrc")
-      if (existsSync(envrcPath)) {
-        return envrcPath
-      }
-
-      // Stop if we've reached the boundary
-      if (current === boundary || current === "/") {
-        break
-      }
-
-      const parent = dirname(current)
-      // Prevent infinite loop
-      if (parent === current) {
-        break
-      }
-
-      current = parent
-    }
-
-    return null
-  }
-
-  /**
    * Load direnv environment variables
    */
   const loadDirenv = async (): Promise<DirenvResult> => {
@@ -115,7 +83,7 @@ export const DirenvLoader: Plugin = async ({ client, $, directory }) => {
       const gitRoot = await findGitRoot()
 
       // Find .envrc file
-      const envrcPath = await findEnvrc(directory, gitRoot)
+      const envrcPath = findEnvrc(directory, gitRoot)
       if (!envrcPath) {
         return result
       }
@@ -194,3 +162,14 @@ export const DirenvLoader: Plugin = async ({ client, $, directory }) => {
     },
   }
 }
+
+// One default export serves both OpenCode majors: V2 reads `id` + `setup`,
+// V1 calls `server`. The named export is the same object, so a V1 loader that
+// walks every export still loads the plugin once.
+export const DirenvLoader = {
+  id: "opencode-direnv",
+  setup: setupV2,
+  server: serverV1,
+}
+
+export default DirenvLoader

@@ -46,7 +46,7 @@ opencode-direnv automatically detects and loads `.envrc` files, ensuring your Op
 
 | Dependency | Version | Required | Notes |
 |------------|---------|----------|-------|
-| [OpenCode](https://opencode.ai/) | `>=1.0.0` | Yes | Plugin host environment |
+| [OpenCode](https://opencode.ai/) | `>=1.0.0` (1.x and 2.x) | Yes | Plugin host environment |
 | [direnv](https://direnv.net/) | `>=2.0.0` | Yes | Must be available in PATH |
 | TypeScript | `>=5.0.0` | Dev only | For building from source |
 
@@ -151,6 +151,15 @@ use asdf
 3. **Environment Export** — Executes `direnv export json` for structured output
 4. **Variable Application** — Merges exported variables into `process.env`
 
+### OpenCode 2.x
+
+OpenCode 2 runs plugins in a long-lived server shared by every project and session, so the plugin does not touch `process.env` there. Instead it hooks each shell command (`shell` `create.before`) and applies the direnv diff to that command's own environment:
+
+1. **Per Command** — Resolves `.envrc` from the command's working directory, stopping at its git root
+2. **Environment Export** — Runs `direnv export json` against the command's environment; `null` values unset a variable
+3. **Reload Tracking** — Reuses the result while every file direnv watches is unchanged (`.envrc`, its allow/deny state, `watch_file` entries such as `flake.lock`), so `direnv allow`/`deny` and edits to watched files apply on the next command
+4. **Silent Skip** — No direnv, no `.envrc`, or a blocked `.envrc` leaves the environment untouched (OpenCode 2 plugins have no toast API)
+
 ---
 
 ## Notifications
@@ -167,7 +176,7 @@ use asdf
 
 | Limitation | Description | Workaround |
 |------------|-------------|------------|
-| Single Load | Environment loaded once per session | Start new session for `.envrc` changes |
+| Single Load (1.x) | Environment loaded once per session | Start new session for `.envrc` changes (2.x reloads automatically) |
 | Manual Allow | `.envrc` must be explicitly allowed | Run `direnv allow` (security feature) |
 | No Unload | Variables persist until session ends | Sessions are isolated by design |
 
@@ -215,6 +224,9 @@ bun install
 
 # Build
 bun run build
+
+# Test (runs against dist/)
+npm test
 ```
 
 ---

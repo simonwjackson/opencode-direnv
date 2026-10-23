@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "node --test test/"
   },
   "keywords": [
     "opencode",
